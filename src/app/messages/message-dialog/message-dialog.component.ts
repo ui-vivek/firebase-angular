@@ -1,34 +1,23 @@
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators ,ReactiveFormsModule,FormsModule} from '@angular/forms';
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
-  model,
-  signal,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogRef,
-  MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormControl } from '@angular/forms';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import * as MessageActions from '../state/message.actions';
 import { MessageService } from '../../services/message.service';
-
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   imports: [
@@ -40,7 +29,8 @@ import { MessageService } from '../../services/message.service';
     MatDialogActions,
     ReactiveFormsModule,
     CommonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
@@ -48,12 +38,14 @@ import { MessageService } from '../../services/message.service';
 })
 export class MessageDialogComponent {
   messageForm: FormGroup;
+  isSubmitting: boolean = false;
+  private _snackBar = inject(MatSnackBar);
 
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
     private fb: FormBuilder,
     private store: Store,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) {
     this.messageForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -66,12 +58,25 @@ export class MessageDialogComponent {
   }
 
   onSubmit(): void {
+    this.isSubmitting = true;
     if (this.messageForm.valid) {
       const { email, message } = this.messageForm.value;
       this.messageService.submitMessage({email, message}).subscribe((resp)=>{
-        console.log(resp)
+        console.log(resp);
+        this.openSnackBar("Message Sent");
+        this.dialogRef.close();
+        this.isSubmitting = false;
+      }, (error) => {
+        console.error(error);
+        this.openSnackBar("Failed to send message");
+        this.isSubmitting = false;
       });
       this.store.dispatch(MessageActions.submitMessage({ email, message }));
+    } else {
+      this.isSubmitting = false;
     }
+  }
+  openSnackBar(message: string) {
+    this._snackBar.open(message, undefined, { duration: 2000 });
   }
 }

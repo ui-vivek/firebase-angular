@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { addDoc } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs'; // Import from
+
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class MessageService {
   private msgCollection;
 
-  constructor(private db: AngularFireDatabase, private firestore: Firestore) {
+  constructor( private firestore: Firestore) {
     this.msgCollection = collection(this.firestore, 'messages');
   }
 
@@ -20,11 +20,7 @@ export class MessageService {
     }) as Observable<any>;
   }
   submitMessage(msgData: any): Observable<any> {
-    //TDO we need to make the inteface for the msg data
     const msgToCreate = msgData;
-    const promise:any = addDoc(this.msgCollection, msgToCreate).then((resp) => {
-       resp.id;
-    });
-    return promise ;
+    return from(addDoc(this.msgCollection, msgToCreate)); // Convert Promise to Observable
   }
 }

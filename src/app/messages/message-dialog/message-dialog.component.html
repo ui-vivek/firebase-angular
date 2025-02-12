@@ -1,5 +1,5 @@
 <div class="dialog-header">
-    <h1 mat-dialog-title>Send a Message</h1>
+    <div><h1 mat-dialog-title>Send a Message</h1></div>
     <button mat-icon-button mat-dialog-close aria-label="Close" (click)="onClose()">
       <mat-icon>close</mat-icon>
     </button>
@@ -24,6 +24,9 @@
   
   <div mat-dialog-actions>
     <button mat-button (click)="onClose()">Close</button>
-    <button mat-button type="submit" [disabled]="messageForm.invalid" (click)="onSubmit()">Submit</button>
+    <button mat-button type="submit" [disabled]="messageForm.invalid" (click)="onSubmit(); isSubmitting = true">Submit</button> 
   </div>
   
+  <div *ngIf="isSubmitting" class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>

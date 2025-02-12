@@ -10,7 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MessageService } from '../../services/message.service';
-
+import {MatButtonModule} from '@angular/material/button';
 @Component({
   imports: [
     MatFormFieldModule,
@@ -20,7 +20,8 @@ import { MessageService } from '../../services/message.service';
     CommonModule,
     MatIconModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonModule
   ],
   selector: 'app-messages',
   templateUrl: './message.component.html',

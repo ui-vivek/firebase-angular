@@ -14,8 +14,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '', component: MessagesComponent }]),
-    StoreModule.forFeature('messages', messageReducer),
-    EffectsModule.forFeature([MessageEffects]),
+    // StoreModule.forFeature('messages', messageReducer),
+    // EffectsModule.forFeature([MessageEffects]),
     MatSnackBarModule,
     MatProgressSpinnerModule,
   ],
