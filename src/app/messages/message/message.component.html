@@ -14,16 +14,17 @@
     <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
     <mat-cell *matCellDef="let msg">{{ msg.email }}</mat-cell>
   </ng-container>
+  
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let msg">{{ msg.id }}</mat-cell>
+  </ng-container>
 
   <ng-container matColumnDef="message">
     <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
     <mat-cell *matCellDef="let msg">{{ msg.message }}</mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="['email', 'message']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['email', 'message']"></mat-row>
+  <mat-header-row *matHeaderRowDef="['id','email', 'message']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['id','email', 'message'  ]"></mat-row>
 </mat-table>
-
-<!-- <div *ngIf="loading$ | async" class="loading-spinner">
-  <mat-spinner></mat-spinner>
-</div> -->
