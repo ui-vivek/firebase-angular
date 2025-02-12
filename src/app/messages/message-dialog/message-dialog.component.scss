@@ -1,0 +1,71 @@
+:host {
+    display: block;
+    padding: 16px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    text-align: center;
+    color: #3f51b5; // Material primary color
+  }
+  
+  mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .full-width {
+    margin-bottom: 16px;
+  }
+  
+  mat-form-field input,
+  mat-form-field textarea {
+    font-size: 1rem;
+  }
+  
+  mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    gap: 8px;
+  }
+  
+  button {
+    min-width: 80px;
+    font-weight: 600;
+  }
+  
+  button[mat-button] {
+    color: #3f51b5;
+  }
+  
+  button[mat-button]:disabled {
+    color: rgba(0, 0, 0, 0.38);
+  }
+  
+  mat-icon {
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 1.25rem;
+    }
+  
+    mat-dialog-content {
+      gap: 12px;
+    }
+  
+    button {
+      font-size: 0.9rem;
+    }
+  }
+  

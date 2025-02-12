@@ -38,7 +38,7 @@ import { CommonModule } from '@angular/common';
   ],
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
-  styleUrls: ['./message-dialog.component.css'],
+  styleUrls: ['./message-dialog.component.scss'],
 })
 export class MessageDialogComponent {
   messageForm: FormGroup;
