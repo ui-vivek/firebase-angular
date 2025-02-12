@@ -31,7 +31,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   styleUrls: ['./message.component.scss'],
 })
 export class MessagesComponent implements OnInit{
-  messages: { email: string; message: string,id:string }[] = [];
+  messages: { email: string; message: string,id:string,Date:any }[] = [];
   isLoaded: boolean = false; 
   constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
   ngOnInit(): void {
@@ -40,7 +40,16 @@ export class MessagesComponent implements OnInit{
       console.log(msgs)
       this.messages = msgs;
       this.isLoaded = true; 
+      this.sortByDate()
     })
+  }
+  sortByDate(){
+    this.messages.sort((a, b) => {
+      if (a.Date.seconds === b.Date.seconds) {
+        return b.Date.nanoseconds - a.Date.nanoseconds;
+      }
+      return b.Date.seconds - a.Date.seconds;
+    });
   }
   openDialog() {
     const dialogRef = this.dialog.open(MessageDialogComponent);

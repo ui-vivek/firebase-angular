@@ -20,7 +20,7 @@ export class MessageService {
     }) as Observable<any>;
   }
   submitMessage(msgData: any): Observable<any> {
-    const msgToCreate = msgData;
-    return from(addDoc(this.msgCollection, msgToCreate)); // Convert Promise to Observable
+    const msgToCreate = {...msgData,Date:new Date()};
+    return from(addDoc(this.msgCollection, msgToCreate)); 
   }
 }

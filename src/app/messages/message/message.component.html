@@ -22,7 +22,7 @@
 
   <ng-container matColumnDef="message">
     <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
-    <mat-cell *matCellDef="let msg">{{ msg.message }}</mat-cell>
+    <mat-cell *matCellDef="let msg">{{ msg.message.length > 100 ? (msg.message | slice:0:100) + '...' : msg.message }}</mat-cell>
   </ng-container> 
   
   <ng-container matColumnDef="date">
