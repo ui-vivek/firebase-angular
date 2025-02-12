@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Send a Message</h1>
+<div mat-dialog-content>
+  <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Message</mat-label>
+      <textarea matInput formControlName="message" required></textarea>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+  <button mat-button type="submit" [disabled]="messageForm.invalid" (click)="onSubmit()">Submit</button>
+</div>
