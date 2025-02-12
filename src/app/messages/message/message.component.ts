@@ -31,7 +31,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   styleUrls: ['./message.component.scss'],
 })
 export class MessagesComponent implements OnInit{
-  messages: { email: string; message: string }[] = [];
+  messages: { email: string; message: string,id:string }[] = [];
   isLoaded: boolean = false; 
   constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
   ngOnInit(): void {
@@ -50,5 +50,8 @@ export class MessagesComponent implements OnInit{
         console.log(this.messages);
       }
     });
+  }
+  convertTimestamp(timestamp: { seconds: number, nanoseconds: number }): Date {
+    return new Date(timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000));
   }
 }

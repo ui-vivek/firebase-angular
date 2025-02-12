@@ -23,10 +23,15 @@
   <ng-container matColumnDef="message">
     <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
     <mat-cell *matCellDef="let msg">{{ msg.message }}</mat-cell>
+  </ng-container> 
+  
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+    <mat-cell *matCellDef="let msg">{{ convertTimestamp(msg.Date) | date:'short' }}</mat-cell>
   </ng-container>
 
-  <mat-header-row *matHeaderRowDef="['id','email', 'message']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['id','email', 'message'  ]"></mat-row>
+  <mat-header-row *matHeaderRowDef="['id','email', 'message','date']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['id','email', 'message' ,'date' ]"></mat-row>
 </mat-table>
 
 <div *ngIf="!isLoaded" class="spinner-container">
