@@ -11,6 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MessageService } from '../../services/message.service';
 import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 @Component({
   imports: [
     MatFormFieldModule,
@@ -21,7 +23,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatIconModule,
     MatCardModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   selector: 'app-messages',
   templateUrl: './message.component.html',
@@ -29,12 +32,14 @@ import {MatButtonModule} from '@angular/material/button';
 })
 export class MessagesComponent implements OnInit{
   messages: { email: string; message: string }[] = [];
-
+  isLoaded: boolean = false; 
   constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
   ngOnInit(): void {
+    this.isLoaded = false; 
     this.msgServuces.getMessages().subscribe((msgs:any)=>{
       console.log(msgs)
-      this.messages = msgs
+      this.messages = msgs;
+      this.isLoaded = true; 
     })
   }
   openDialog() {
