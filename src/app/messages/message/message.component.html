@@ -1,2 +1,43 @@
+<!-- <h1>Messages Page</h1>
+<button mat-button (click)="openDialog()">Open Form</button> -->
+
+<!-- <table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Message</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let msg of messages">
+      <td>{{ msg.email }}</td>
+      <td>{{ msg.message }}</td>
+    </tr>
+  </tbody>
+</table>  -->
+
 <h1>Messages Page</h1>
-<button mat-button (click)="openDialog()">Open Form</button>
+
+<div class="toolbar">
+  <button mat-raised-button color="primary" (click)="openDialog()">Send a New Message</button>
+</div>
+
+<mat-card *ngIf="messages.length === 0" class="empty-state">
+  <mat-icon>info</mat-icon>
+  <p>No messages available. Click "Send a New Message" to add one.</p>
+</mat-card>
+
+<mat-table [dataSource]="messages" class="mat-elevation-z2" *ngIf="messages.length > 0">
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+    <mat-cell *matCellDef="let msg">{{ msg.email }}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="message">
+    <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
+    <mat-cell *matCellDef="let msg">{{ msg.message }}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="['email', 'message']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['email', 'message']"></mat-row>
+</mat-table>
