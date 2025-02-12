@@ -24,6 +24,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   imports: [
@@ -34,7 +35,8 @@ import { CommonModule } from '@angular/common';
     MatDialogContent,
     MatDialogActions,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
