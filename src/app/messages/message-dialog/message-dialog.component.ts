@@ -23,6 +23,7 @@ import { FormControl } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   imports: [
@@ -33,6 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDialogContent,
     MatDialogActions,
     ReactiveFormsModule,
+    CommonModule
   ],
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
