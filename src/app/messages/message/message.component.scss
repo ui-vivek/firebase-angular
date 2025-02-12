@@ -1,0 +1,64 @@
+:host {
+    display: block;
+    padding: 16px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #3f51b5;
+    margin-bottom: 16px;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+  
+  mat-card.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    background-color: #f5f5f5;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  mat-card.empty-state mat-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  mat-table {
+    width: 100%;
+    overflow: auto;
+  }
+  
+  mat-header-cell,
+  mat-cell {
+    padding: 16px;
+    font-size: 1rem;
+    word-wrap: break-word;
+  }
+  
+  mat-header-cell {
+    font-weight: 700;
+    background-color: #e0e0e0;
+  }
+  
+  mat-row:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+  
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    mat-header-cell,
+    mat-cell {
+      padding: 8px;
+    }
+  }
+  

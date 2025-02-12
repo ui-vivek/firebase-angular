@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   imports: [
@@ -25,11 +26,16 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
 })
-export class MessagesComponent {
+export class MessagesComponent implements OnInit{
   messages: { email: string; message: string }[] = [];
 
-  constructor(private dialog: MatDialog) {}
-
+  constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
+  ngOnInit(): void {
+    this.msgServuces.getMessages().subscribe((msgs:any)=>{
+      console.log(msgs)
+      this.messages = msgs
+    })
+  }
   openDialog() {
     const dialogRef = this.dialog.open(MessageDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {

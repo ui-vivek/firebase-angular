@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, MatToolbarModule, MatButtonModule,RouterLink,CommonModule],
+  imports: [RouterOutlet, MatToolbarModule, MatButtonModule,RouterLink,CommonModule,],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

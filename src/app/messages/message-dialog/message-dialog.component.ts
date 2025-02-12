@@ -25,6 +25,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
+import { Store } from '@ngrx/store';
+import * as MessageActions from '../state/message.actions';
+import { MessageService } from '../../services/message.service';
+
 
 @Component({
   imports: [
@@ -47,7 +51,9 @@ export class MessageDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store,
+    private messageService: MessageService
   ) {
     this.messageForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -61,8 +67,11 @@ export class MessageDialogComponent {
 
   onSubmit(): void {
     if (this.messageForm.valid) {
-      // Handle form submission
-      this.dialogRef.close(this.messageForm.value);
+      const { email, message } = this.messageForm.value;
+      this.messageService.submitMessage({email, message}).subscribe((resp)=>{
+        console.log(resp)
+      });
+      this.store.dispatch(MessageActions.submitMessage({ email, message }));
     }
   }
 }
