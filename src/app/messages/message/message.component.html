@@ -42,7 +42,6 @@
                (page)="handlePageEvent($event)"
                aria-label="Select page">
 </mat-paginator>
-
-<div *ngIf="!isLoaded" class="spinner-container">
+<div *ngIf="isLoaded" class="spinner-container">
     <mat-spinner></mat-spinner>
 </div>

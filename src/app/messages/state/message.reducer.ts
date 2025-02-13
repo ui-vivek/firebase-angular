@@ -1,12 +1,15 @@
+// message.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import * as MessageActions from './message.actions';
 
 export interface MessageState {
+  messages: any[];
   loading: boolean;
-  error: string | null;
+  error: any;
 }
 
-const initialState: MessageState = {
+export const initialState: MessageState = {
+  messages: [],
   loading: false,
   error: null,
 };
@@ -23,6 +26,21 @@ export const messageReducer = createReducer(
     loading: false,
   })),
   on(MessageActions.submitMessageFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
+  on(MessageActions.loadMessages, (state) => ({
+    ...state,
+    loading: true,
+    error: null,
+  })),
+  on(MessageActions.loadMessagesSuccess, (state, { messages }) => ({
+    ...state,
+    loading: false,
+    messages,
+  })),
+  on(MessageActions.loadMessagesFailure, (state, { error }) => ({
     ...state,
     loading: false,
     error,

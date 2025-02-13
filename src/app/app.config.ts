@@ -14,18 +14,29 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
-
+import { messageReducer } from './messages/state/message.reducer';
+import { MessageEffects } from './messages/state/message.effects';
+import { EffectsModule } from '@ngrx/effects';
 const firebaseConfig = environment.firebaseConfig;
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimationsAsync(),
-    provideStore(),
-    provideEffects(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideStore({'message':messageReducer}),
+    provideEffects([MessageEffects]),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: false,
+      autoPause: true,
+      features: {
+        pause: false,
+        lock: true,
+        persist: true
+      }
+    }),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    { provide: FIREBASE_OPTIONS, useValue: firebaseConfig }
+    { provide: FIREBASE_OPTIONS, useValue: firebaseConfig },
   ],
 };

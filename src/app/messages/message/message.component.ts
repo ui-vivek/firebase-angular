@@ -17,7 +17,10 @@ import { PageEvent } from '@angular/material/paginator';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { MessageDialogViewComponent } from '../../message-dialog-view/message-dialog-view.component';
-
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { getMsgList, selectError, selectLoading, selectMessages } from '../state/message.selectors';
+import * as MessageActions from '../state/message.actions';
 @Component({
   imports: [
     MatFormFieldModule,
@@ -43,20 +46,28 @@ export class MessagesComponent implements OnInit{
   pageSize: number = 10;
   currentPage: number = 0;
   isLoaded: boolean = false; 
+  messages$: Observable<any[]>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
-  ngOnInit(): void {
-    this.isLoaded = false; 
-    this.msgServuces.getMessages().subscribe((msgs:any)=>{
-      console.log(msgs)
-      this.messages = msgs;
-      this.isLoaded = true; 
-      this.sortByDate()
-      this.paginator.length = this.messages.length;
-      this.updateDisplayedMessages();
-    })
+  constructor(private dialog: MatDialog,private store: Store) {
+    this.messages$ = this.store.select(selectMessages);
   }
+  ngOnInit(): void {
+    
+    this.getallMessages()
+  }
+  
+  getallMessages() {
+    this.store.dispatch(MessageActions.loadMessages());
+    this.store.select(getMsgList).subscribe((megs: any) => {
+      console.log('Fetched messages:', megs.messages);
+      this.messages = megs.messages;
+      this.isLoaded = megs.loading;
+      console.log(megs);
+    });
+    this.sortByDate()
+    this.updateDisplayedMessages();
+  }
+
   sortByDate(){
     this.messages.sort((a, b) => {
       if (a.Date.seconds === b.Date.seconds) {

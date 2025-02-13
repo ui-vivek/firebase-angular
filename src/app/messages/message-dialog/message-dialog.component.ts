@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup, Validators ,ReactiveFormsModule,FormsModule} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import {
   Component,
   inject,
@@ -12,12 +12,13 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import * as MessageActions from '../state/message.actions';
-import { MessageService } from '../../services/message.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Observable } from 'rxjs';
+import { selectLoading, selectError } from '../state/message.selectors';
 
 @Component({
   imports: [
@@ -40,40 +41,66 @@ export class MessageDialogComponent {
   messageForm: FormGroup;
   isSubmitting: boolean = false;
   private _snackBar = inject(MatSnackBar);
+  loading$: Observable<boolean>;
+  error$: Observable<string | null>;
 
   constructor(
     public dialogRef: MatDialogRef<MessageDialogComponent>,
     private fb: FormBuilder,
     private store: Store,
-    private messageService: MessageService,
   ) {
     this.messageForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required],
     });
+
+    this.loading$ = this.store.select(selectLoading);
+    this.error$ = this.store.select(selectError);
   }
 
   onClose(): void {
     this.dialogRef.close();
   }
 
+  // onSubmit(): void {
+  //   this.isSubmitting = true;
+  //   if (this.messageForm.valid) {
+  //     const { email, message } = this.messageForm.value;
+  //     this.store.dispatch(MessageActions.submitMessage({ email, message }));
+  //     this.loading$.subscribe(loading => {
+  //       if (!loading) {
+  //         this.isSubmitting = false;
+  //         this.onClose();
+  //         this.openSnackBar('Message sent successfully!');
+  //       }
+  //     });
+  //     this.error$.subscribe(error => {
+  //       if (error) {
+  //         this.isSubmitting = false;
+  //         this.openSnackBar('Failed to send message.');
+  //       }
+  //     });
+  //   } else {
+  //     this.isSubmitting = false;
+  //   }
+  // }
   onSubmit(): void {
-    this.isSubmitting = true;
     if (this.messageForm.valid) {
       const { email, message } = this.messageForm.value;
-      this.messageService.submitMessage({email, message}).subscribe((resp)=>{
-        console.log(resp);
-        this.openSnackBar("Message Sent");
-        this.dialogRef.close();
-        this.isSubmitting = false;
-      }, (error) => {
-        console.error(error);
-        this.openSnackBar("Failed to send message");
-        this.isSubmitting = false;
-      });
       this.store.dispatch(MessageActions.submitMessage({ email, message }));
-    } else {
-      this.isSubmitting = false;
+
+      this.loading$.subscribe((loading) => {
+        if (!loading) {
+          this.onClose();
+          this.openSnackBar('Message sent successfully!');
+        }
+      });
+
+      this.error$.subscribe((error) => {
+        if (error) {
+          this.openSnackBar('Failed to send message.');
+        }
+      });
     }
   }
   openSnackBar(message: string) {

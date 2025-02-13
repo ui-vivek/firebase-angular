@@ -1,13 +1,12 @@
 export const environment = {
-  // production: true, //Make True for Production Ready
   production: false,
   firebaseConfig: {
-    apiKey: 'YOUR_PRODUCTION_API_KEY',
-    authDomain: 'YOUR_PRODUCTION_AUTH_DOMAIN',
-    projectId: 'YOUR_PRODUCTION_PROJECT_ID',
-    storageBucket: 'YOUR_PRODUCTION_STORAGE_BUCKET',
-    messagingSenderId: 'YOUR_PRODUCTION_MESSAGING_SENDER_ID',
-    appId: 'YOUR_PRODUCTION_APP_ID',
-    measurementId: 'YOUR_PRODUCTION_MEASUREMENT_ID',
+    apiKey: 'PRODUCTION_API_KEY',
+    authDomain: 'PRODUCTION_AUTH_DOMAIN',
+    projectId: 'PRODUCTION_PROJECT_ID',
+    storageBucket: 'PRODUCTION_STORAGE_BUCKET',
+    messagingSenderId: 'PRODUCTION_MESSAGING_SENDER_ID',
+    appId: 'PRODUCTION_APP_ID',
+    measurementId: 'PRODUCTION_MEASUREMENT_ID',
   },
 };

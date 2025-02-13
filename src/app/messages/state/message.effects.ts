@@ -1,31 +1,39 @@
-import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
-import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+// message.effects.ts
+import { inject, Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { MessageService } from '../../services/message.service';
 import * as MessageActions from './message.actions';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {  mergeMap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, of, switchMap } from "rxjs";
 
 @Injectable()
 export class MessageEffects {
-  constructor(
-    private actions$: Actions,
-    private firestore: Firestore,
-    private snackBar: MatSnackBar
-  ) {}
+  actions$ = inject(Actions);
+  messageService = inject(MessageService);
 
   submitMessage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MessageActions.submitMessage),
       mergeMap(({ email, message }) =>
-        addDoc(collection(this.firestore, 'messages'), { email, message, date: new Date() }).then(() => {
-          this.snackBar.open('Message sent successfully!', 'Close', { duration: 3000 });
-          return MessageActions.submitMessageSuccess();
-        }).catch((error) => {
-          this.snackBar.open('Failed to send message.', 'Close', { duration: 3000 });
-          return MessageActions.submitMessageFailure({ error: error.message });
-        })
+        this.messageService.submitMessage({ email, message }).pipe(
+          map(() => MessageActions.submitMessageSuccess()),
+          catchError((error) =>
+            of(MessageActions.submitMessageFailure({ error }))
+          )
+        )
       )
+    )
+  );
+
+  loadMessages$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MessageActions.loadMessages),
+        exhaustMap(() => {
+        return this.messageService.getMessages().pipe(
+            map((messages) => MessageActions.loadMessagesSuccess({ messages })),
+            catchError((error) => of(MessageActions.loadMessagesFailure({ error: error.message })))
+        )
+    })
     )
   );
 }
