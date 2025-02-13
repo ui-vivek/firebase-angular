@@ -15,6 +15,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { MessageDialogViewComponent } from '../../message-dialog-view/message-dialog-view.component';
 
 @Component({
   imports: [
@@ -28,7 +30,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatTableModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTooltipModule
   ],
   selector: 'app-messages',
   templateUrl: './message.component.html',
@@ -82,5 +85,10 @@ export class MessagesComponent implements OnInit{
   updateDisplayedMessages() {
     const startIndex = this.currentPage * this.pageSize;
     this.displayedMessages = this.messages.slice(startIndex, startIndex + this.pageSize);
+  }
+  openDialogMsgView(message: string) {
+    this.dialog.open(MessageDialogViewComponent, {
+      data: { message: message }, // Pass the message to the dialog
+    });
   }
 }

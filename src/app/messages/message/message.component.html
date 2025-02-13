@@ -22,7 +22,9 @@
 
   <ng-container matColumnDef="message">
     <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
-    <mat-cell *matCellDef="let msg">{{ msg.message.length > 100 ? (msg.message | slice:0:100) + '...' : msg.message }}</mat-cell>
+    <mat-cell *matCellDef="let msg" #tooltip="matTooltip" matTooltip="{{msg.message}}" (click)="msg.message.length > 100 ? openDialogMsgView(msg.message) : null">
+      {{ msg.message.length > 100 ? (msg.message | slice:0:100) + '...' : msg.message }}
+    </mat-cell>
   </ng-container> 
   
   <ng-container matColumnDef="date">
