@@ -9,7 +9,7 @@
   <p>No messages available. Click "Send a New Message" to add one.</p>
 </mat-card>
 
-<mat-table [dataSource]="messages" class="mat-elevation-z2" *ngIf="messages.length > 0">
+<mat-table [dataSource]="displayedMessages" class="mat-elevation-z2" *ngIf="displayedMessages.length > 0">
   <ng-container matColumnDef="email">
     <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
     <mat-cell *matCellDef="let msg">{{ msg.email }}</mat-cell>
@@ -34,6 +34,13 @@
   <mat-row *matRowDef="let row; columns: ['id','email', 'message' ,'date' ]"></mat-row>
 </mat-table>
 
+<mat-paginator [length]="messages.length"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="[5, 10, 25, 100]"
+               (page)="handlePageEvent($event)"
+               aria-label="Select page">
+</mat-paginator>
+
 <div *ngIf="!isLoaded" class="spinner-container">
     <mat-spinner></mat-spinner>
-  </div>
+</div>

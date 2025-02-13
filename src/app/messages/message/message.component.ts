@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageDialogComponent } from '../message-dialog/message-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MessageService } from '../../services/message.service';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatPaginator } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @Component({
   imports: [
@@ -24,15 +27,21 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatCardModule,
     MatTableModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
   selector: 'app-messages',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss'],
 })
 export class MessagesComponent implements OnInit{
-  messages: { email: string; message: string,id:string,Date:any }[] = [];
+  messages: { email: string; message: string; id: string; Date: any }[] = [];
+  displayedMessages: { email: string; message: string; id: string; Date: any }[] = [];
+  pageSize: number = 10;
+  currentPage: number = 0;
   isLoaded: boolean = false; 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   constructor(private dialog: MatDialog,private msgServuces:MessageService) {}
   ngOnInit(): void {
     this.isLoaded = false; 
@@ -41,6 +50,8 @@ export class MessagesComponent implements OnInit{
       this.messages = msgs;
       this.isLoaded = true; 
       this.sortByDate()
+      this.paginator.length = this.messages.length;
+      this.updateDisplayedMessages();
     })
   }
   sortByDate(){
@@ -62,5 +73,14 @@ export class MessagesComponent implements OnInit{
   }
   convertTimestamp(timestamp: { seconds: number, nanoseconds: number }): Date {
     return new Date(timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000));
+  }
+  handlePageEvent(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updateDisplayedMessages();
+  }
+  updateDisplayedMessages() {
+    const startIndex = this.currentPage * this.pageSize;
+    this.displayedMessages = this.messages.slice(startIndex, startIndex + this.pageSize);
   }
 }
