@@ -52,23 +52,23 @@ export class MessagesComponent implements OnInit{
     this.messages$ = this.store.select(selectMessages);
   }
   ngOnInit(): void {
-    
-    this.getallMessages()
+    this.getallMessages();
   }
   
   getallMessages() {
     this.store.dispatch(MessageActions.loadMessages());
+  
     this.store.select(getMsgList).subscribe((megs: any) => {
-      console.log('Fetched messages:', megs.messages);
-      this.messages = megs.messages;
-      this.isLoaded = megs.loading;
-      console.log(megs);
+      if (megs && megs.messages) {
+        this.messages = megs.messages;
+        this.isLoaded = true;
+        // this.sortByDate();
+        this.updateDisplayedMessages();
+      }
     });
-    this.sortByDate()
-    this.updateDisplayedMessages();
   }
-
-  sortByDate(){
+  
+  sortByDate() {
     this.messages.sort((a, b) => {
       if (a.Date.seconds === b.Date.seconds) {
         return b.Date.nanoseconds - a.Date.nanoseconds;
@@ -76,6 +76,37 @@ export class MessagesComponent implements OnInit{
       return b.Date.seconds - a.Date.seconds;
     });
   }
+  
+  updateDisplayedMessages() {
+    const startIndex = this.currentPage * this.pageSize;
+    this.displayedMessages = this.messages.slice(startIndex, startIndex + this.pageSize);
+  }
+  
+  // ngOnInit(): void {
+    
+  //   this.getallMessages()
+  // }
+  
+  // getallMessages() {
+  //   this.store.dispatch(MessageActions.loadMessages());
+  //   this.store.select(getMsgList).subscribe((megs: any) => {
+  //     console.log('Fetched messages:', megs.messages);
+  //     this.messages = megs.messages;
+  //     this.isLoaded = megs.loading;
+  //     console.log(megs);
+  //   });
+  //   this.sortByDate()
+  //   this.updateDisplayedMessages();
+  // }
+
+  // sortByDate(){
+  //   this.messages.sort((a, b) => {
+  //     if (a.Date.seconds === b.Date.seconds) {
+  //       return b.Date.nanoseconds - a.Date.nanoseconds;
+  //     }
+  //     return b.Date.seconds - a.Date.seconds;
+  //   });
+  // }
   openDialog() {
     const dialogRef = this.dialog.open(MessageDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
@@ -93,10 +124,10 @@ export class MessagesComponent implements OnInit{
     this.pageSize = event.pageSize;
     this.updateDisplayedMessages();
   }
-  updateDisplayedMessages() {
-    const startIndex = this.currentPage * this.pageSize;
-    this.displayedMessages = this.messages.slice(startIndex, startIndex + this.pageSize);
-  }
+  // updateDisplayedMessages() {
+  //   const startIndex = this.currentPage * this.pageSize;
+  //   this.displayedMessages = this.messages.slice(startIndex, startIndex + this.pageSize);
+  // }
   openDialogMsgView(message: string) {
     this.dialog.open(MessageDialogViewComponent, {
       data: { message: message }, // Pass the message to the dialog

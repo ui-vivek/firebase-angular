@@ -4,44 +4,50 @@
   <button mat-raised-button color="primary" (click)="openDialog()">Send a New Message</button>
 </div>
 
-<mat-card *ngIf="messages.length === 0" class="empty-state">
-  <mat-icon>info</mat-icon>
-  <p>No messages available. Click "Send a New Message" to add one.</p>
-</mat-card>
+<div *ngIf="isLoaded; else loadingTemplate">
+  <mat-card *ngIf="messages.length === 0" class="empty-state">
+    <mat-icon>info</mat-icon>
+    <p>No messages available. Click "Send a New Message" to add one.</p>
+  </mat-card>
 
-<mat-table [dataSource]="displayedMessages" class="mat-elevation-z2" *ngIf="displayedMessages.length > 0">
-  <ng-container matColumnDef="email">
-    <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-    <mat-cell *matCellDef="let msg">{{ msg.email }}</mat-cell>
-  </ng-container>
-  
-  <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-    <mat-cell *matCellDef="let msg">{{ msg.id }}</mat-cell>
-  </ng-container>
+  <mat-table [dataSource]="displayedMessages" class="mat-elevation-z2" *ngIf="messages.length > 0">
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+      <mat-cell *matCellDef="let msg">{{ msg.email }}</mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="message">
-    <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
-    <mat-cell *matCellDef="let msg" #tooltip="matTooltip" matTooltip="{{msg.message}}" (click)="msg.message.length > 100 ? openDialogMsgView(msg.message) : null">
-      {{ msg.message.length > 100 ? (msg.message | slice:0:100) + '...' : msg.message }}
-    </mat-cell>
-  </ng-container> 
-  
-  <ng-container matColumnDef="date">
-    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
-    <mat-cell *matCellDef="let msg">{{ convertTimestamp(msg.Date) | date:'short' }}</mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let msg">{{ msg.id }}</mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="['id','email', 'message','date']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['id','email', 'message' ,'date' ]"></mat-row>
-</mat-table>
+    <ng-container matColumnDef="message">
+      <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
+      <mat-cell *matCellDef="let msg" #tooltip="matTooltip" matTooltip="{{ msg.message }}" 
+                (click)="msg.message.length > 100 ? openDialogMsgView(msg.message) : null">
+        {{ msg.message.length > 100 ? (msg.message | slice: 0:100) + '...' : msg.message }}
+      </mat-cell>
+    </ng-container>
 
-<mat-paginator [length]="messages.length"
-               [pageSize]="pageSize"
-               [pageSizeOptions]="[5, 10, 25, 100]"
-               (page)="handlePageEvent($event)"
-               aria-label="Select page">
-</mat-paginator>
-<div *ngIf="isLoaded" class="spinner-container">
-    <mat-spinner></mat-spinner>
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+      <mat-cell *matCellDef="let msg">{{ convertTimestamp(msg.Date) | date: 'short' }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['id','email', 'message','date']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['id','email', 'message', 'date']"></mat-row>
+  </mat-table>
+
+  <mat-paginator [length]="messages.length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 25, 100]"
+                 (page)="handlePageEvent($event)"
+                 aria-label="Select page">
+  </mat-paginator>
 </div>
+
+<ng-template #loadingTemplate>
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
