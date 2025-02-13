@@ -4,7 +4,7 @@
   <button mat-raised-button color="primary" (click)="openDialog()">Send a New Message</button>
 </div>
 
-<div *ngIf="isLoaded; else loadingTemplate">
+<div *ngIf="!isLoaded; else loadingTemplate">
   <mat-card *ngIf="messages.length === 0" class="empty-state">
     <mat-icon>info</mat-icon>
     <p>No messages available. Click "Send a New Message" to add one.</p>
@@ -23,7 +23,7 @@
 
     <ng-container matColumnDef="message">
       <mat-header-cell *matHeaderCellDef>Message</mat-header-cell>
-      <mat-cell *matCellDef="let msg" #tooltip="matTooltip" matTooltip="{{ msg.message }}" 
+      <mat-cell *matCellDef="let msg" #tooltip="matTooltip" matTooltip="{{ msg.message.length > 100 ? 'Click To View Message' : null}}" 
                 (click)="msg.message.length > 100 ? openDialogMsgView(msg.message) : null">
         {{ msg.message.length > 100 ? (msg.message | slice: 0:100) + '...' : msg.message }}
       </mat-cell>

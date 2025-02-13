@@ -1,4 +1,3 @@
-// message.service.ts
 import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc } from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
@@ -14,9 +13,7 @@ export class MessageService {
   }
 
   getMessages() {
-    console.log("getetettet")
     let data = collectionData(this.msgCollection, { idField: 'id' });
-    console.log(data)
     return data
   }
 

@@ -62,28 +62,6 @@ export class MessageDialogComponent {
     this.dialogRef.close();
   }
 
-  // onSubmit(): void {
-  //   this.isSubmitting = true;
-  //   if (this.messageForm.valid) {
-  //     const { email, message } = this.messageForm.value;
-  //     this.store.dispatch(MessageActions.submitMessage({ email, message }));
-  //     this.loading$.subscribe(loading => {
-  //       if (!loading) {
-  //         this.isSubmitting = false;
-  //         this.onClose();
-  //         this.openSnackBar('Message sent successfully!');
-  //       }
-  //     });
-  //     this.error$.subscribe(error => {
-  //       if (error) {
-  //         this.isSubmitting = false;
-  //         this.openSnackBar('Failed to send message.');
-  //       }
-  //     });
-  //   } else {
-  //     this.isSubmitting = false;
-  //   }
-  // }
   onSubmit(): void {
     if (this.messageForm.valid) {
       const { email, message } = this.messageForm.value;

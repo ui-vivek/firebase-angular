@@ -1,4 +1,3 @@
-// message.selectors.ts
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { MessageState } from './message.reducer';
 

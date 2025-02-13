@@ -1,4 +1,3 @@
-// message.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import * as MessageActions from './message.actions';
 

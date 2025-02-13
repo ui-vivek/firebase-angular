@@ -60,6 +60,7 @@
       this.store.dispatch(MessageActions.loadMessages());
     
       this.store.select(getMsgList).subscribe((megs: any) => {
+        let resp = {...megs};
         if (megs && megs.messages) {
           let arrayForSort = [...megs.messages]
           arrayForSort.sort((a, b) => {
@@ -68,8 +69,7 @@
             return dateB - dateA;
           });
           this.messages = arrayForSort
-          console.log(arrayForSort);
-          this.isLoaded =  true;
+          this.isLoaded = resp.messages.length > 0 ? false : true;
           this.updateDisplayedMessages();
         }
       });
