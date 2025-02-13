@@ -6,20 +6,22 @@
   </div>
   
   <div mat-dialog-content>
-    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" required />
-        <mat-error *ngIf="messageForm.get('email')?.hasError('required')">Email is required</mat-error>
-        <mat-error *ngIf="messageForm.get('email')?.hasError('email')">Invalid email format</mat-error>
-      </mat-form-field>
-  
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Message</mat-label>
-        <textarea matInput formControlName="message" required></textarea>
-        <mat-error *ngIf="messageForm.get('message')?.hasError('required')">Message is required</mat-error>
-      </mat-form-field>
-    </form>
+    <div class="Form-Inputs">
+        <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" required />
+              <mat-error *ngIf="messageForm.get('email')?.hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="messageForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+            </mat-form-field>
+        
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Message</mat-label>
+              <textarea matInput formControlName="message" required></textarea>
+              <mat-error *ngIf="messageForm.get('message')?.hasError('required')">Message is required</mat-error>
+            </mat-form-field>
+          </form>
+    </div>
   </div>
   
   <div mat-dialog-actions>
